@@ -21,6 +21,8 @@ source:
       - if: win
         then: disable-parallel-builds.patch
       - bump-min-cmake.patch
+      # https://github.com/colmap/colmap/pull/4900
+      - fix-msvc-lambda-odr.patch
 
 build:
   number: 1
