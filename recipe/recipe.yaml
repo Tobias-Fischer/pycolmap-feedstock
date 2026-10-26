@@ -23,7 +23,7 @@ source:
       - bump-min-cmake.patch
 
 build:
-  number: 0
+  number: 1
   string: ${{ string_prefix }}h${{ hash }}_${{ build_number }}
   variant:
     use_keys:
@@ -97,7 +97,11 @@ requirements:
     - isort
     - libboost-devel
     - if: cuda == "disabled"
-      then: colmap ==${{ version }} cpu_*
+      then:
+        - colmap ==${{ version }} cpu_*
+        # avoid pulling CUDA builds (and with them CUDA) into cpu builds
+        - ceres-solver * [build="cpu*"]
+        - libfaiss * [build="*_cpu"]
     - if: cuda == "enabled"
       then: colmap ==${{ version }} cuda_*
     - eigen-abi-devel
@@ -116,7 +120,7 @@ requirements:
     - if: unix
       then: vlfeat
     - gmp
-    - qt-main
+    - qt6-main
     - lz4-c
     - fmt
     - libfaiss
